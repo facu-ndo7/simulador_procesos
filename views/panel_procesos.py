@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 
 from utils.agregar_proceso import agregar_proceso
+from utils.eliminar_proceso import eliminar_proceso
 
 def panel_procesos(self, padre):
     marco = ttk.LabelFrame(padre, text="Carga de procesos", padding=10)
@@ -33,7 +34,7 @@ def panel_procesos(self, padre):
     ttk.Button(
         marco,
         text="Eliminar seleccionado",
-        command=self.eliminar_proceso
+        command= lambda: eliminar_proceso(self)
     ).grid(row=2, column=3, padx=8, pady=5)
     
     

@@ -5,6 +5,8 @@ from copy import deepcopy
 
 import utils.decoradores as decoradores
 
+from utils.actualizar_tabla import actualizar_tabla
+
 def agregar_proceso(self):
     if self.simulacion_activa:
         messagebox.showwarning(
@@ -66,7 +68,7 @@ def agregar_proceso(self):
 
 
     self.procesos.append(decoradores.Proceso(pid, rafaga, memoria))
-    self._actualizar_tabla(self.procesos)
+    actualizar_tabla(self, self.procesos)
 
 
     self.entry_pid.delete(0, tk.END)

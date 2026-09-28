@@ -1,6 +1,12 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
+from utils.iniciar_simulacion import iniciar_simulacion
+from utils.paso_siguiente import paso_siguiente
+from utils.reiniciar_simulacion import reiniciar_simulacion
+from utils.limpiar_todo import limpiar_todo
+from utils.actualizar_estado_quantum import actualizar_estado_quantum
+
 def panel_configuracion(self, padre):
     marco = ttk.LabelFrame(padre, text="Configuración", padding=10)
     marco.pack(side="left", fill="x", expand=True, padx=(6, 0))
@@ -26,7 +32,7 @@ def panel_configuracion(self, padre):
     
     self.combo_cpu.current(0)
     self.combo_cpu.grid(row=1, column=1, padx=5, pady=5)
-    self.combo_cpu.bind("<<ComboboxSelected>>", lambda e: self._actualizar_estado_quantum())
+    self.combo_cpu.bind("<<ComboboxSelected>>", lambda e: actualizar_estado_quantum(self))
     
     
     ttk.Label(marco, text="Algoritmo memoria").grid(row=0, column=2, sticky="w", padx=5, pady=5)
@@ -49,14 +55,14 @@ def panel_configuracion(self, padre):
     ttk.Button(
         marco,
         text="Iniciar simulación",
-        command=self.iniciar_simulacion
+        command= lambda: iniciar_simulacion(self)
     ).grid(row=2, column=0, padx=5, pady=10)
     
     
     self.btn_paso = ttk.Button(
         marco,
         text="Paso siguiente",
-        command=self.paso_siguiente,
+        command=lambda: paso_siguiente(self),
         state="disabled"
     )
     self.btn_paso.grid(row=2, column=1, padx=5, pady=10)
@@ -65,12 +71,12 @@ def panel_configuracion(self, padre):
     ttk.Button(
         marco,
         text="Reiniciar",
-        command=self.reiniciar_simulacion
+        command=lambda: reiniciar_simulacion(self)
     ).grid(row=2, column=2, padx=5, pady=10)
     
     
     ttk.Button(
         marco,
         text="Limpiar todo",
-        command=self.limpiar_todo
+        command=lambda: limpiar_todo(self)
     ).grid(row=2, column=3, padx=5, pady=10)
