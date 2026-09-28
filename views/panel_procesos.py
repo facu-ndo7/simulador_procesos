@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
+from utils.agregar_proceso import agregar_proceso
+
 def panel_procesos(self, padre):
     marco = ttk.LabelFrame(padre, text="Carga de procesos", padding=10)
     marco.pack(side="left", fill="x", expand=True, padx=(0, 6))
@@ -24,7 +26,7 @@ def panel_procesos(self, padre):
     ttk.Button(
         marco,
         text="Agregar proceso",
-        command=self.agregar_proceso
+        command= lambda: agregar_proceso(self) # Con el comando lambda la función solo se ejecuta al hacer click en el botón.
     ).grid(row=1, column=3, padx=8, pady=5)
     
     
