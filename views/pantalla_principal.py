@@ -44,16 +44,19 @@ def pantalla_principal(self):
     panel_configuracion(self, superior)
     
     
-    # Paneles centrales.
-    central = ttk.Frame(contenedor)
-    central.pack(side="top", fill="both", expand=True)
-    
-    crear_tabla(self, central)
-    panel_cpu(self, central)
-    panel_memoria(self, central)
-    
-    # Panel inferior.
+    # Panel inferior (se empaqueta ANTES que el central para reservar
+    # su espacio: con pack, el widget con expand=True reclama todo lo
+    # que queda libre; si el central se empaqueta primero, empuja al
+    # inferior fuera de la ventana y panel_eventos() no se ve).
     inferior = ttk.Frame(contenedor)
     inferior.pack(side="bottom", fill="x", pady=(10, 0))
     panel_eventos(self, inferior)
+
+    # Paneles centrales (ocupan solo el espacio restante).
+    central = ttk.Frame(contenedor)
+    central.pack(side="top", fill="both", expand=True)
+
+    crear_tabla(self, central)
+    panel_cpu(self, central)
+    panel_memoria(self, central)
     

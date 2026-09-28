@@ -12,7 +12,16 @@ def panel_eventos(self, padre):
     
     marco = ttk.LabelFrame(padre, text="Registro paso a paso", padding=8)
     marco.pack(fill="x")
-    
-    
-    self.text_eventos = tk.Text(marco, height=8, wrap="word", font=("Arial", 11))
-    self.text_eventos.pack(fill="x")
+    # Altura contenida + scrollbar: el registro crece hacia abajo sin
+    # empujar al resto del layout fuera de la ventana.
+    cuerpo = ttk.Frame(marco)
+    cuerpo.pack(fill="x", expand=True)
+
+    scroll = ttk.Scrollbar(cuerpo, orient="vertical")
+    scroll.pack(side="right", fill="y")
+
+    self.text_eventos = tk.Text(cuerpo, height=6, wrap="word",
+                                font=("Arial", 11),
+                                yscrollcommand=scroll.set)
+    self.text_eventos.pack(side="left", fill="both", expand=True)
+    scroll.config(command=self.text_eventos.yview)
