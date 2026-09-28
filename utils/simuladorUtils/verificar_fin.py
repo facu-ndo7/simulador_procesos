@@ -6,6 +6,9 @@ def verificar_fin(self):
         quedan_pendientes = bool(self.cola_rr)
     else:
         quedan_pendientes = bool(self.listos)
+    quedan_pendientes = (quedan_pendientes
+                         or bool(getattr(self, "bloqueados", []))
+                         or bool(getattr(self, "espera_pagina", [])))
 
 
     if not quedan_pendientes:

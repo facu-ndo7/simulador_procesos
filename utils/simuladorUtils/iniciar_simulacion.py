@@ -159,6 +159,8 @@ def iniciar_simulacion(self):
 
     self.listos = []
     self.espera_memoria = []
+    self.bloqueados = []
+    self.espera_pagina = []
     self.cola_rr = deque()
 
 

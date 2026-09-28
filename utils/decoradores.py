@@ -1,5 +1,15 @@
 from dataclasses import dataclass, field
 
+ESTADOS_PROCESO = (
+    "Nuevo",
+    "Esperando memoria",
+    "Listo",
+    "Ejecutando",
+    "Bloqueado",
+    "Esperando página",
+    "Terminado",
+)
+
 @dataclass
 class Proceso:
     pid: str

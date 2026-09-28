@@ -6,19 +6,20 @@ def simular_accesos_virtuales(self, proceso, unidades):
     """Ejecuta referencias por demanda y registra fallos/swaps.
 
     No-op para gestores no virtuales (devuelven ceros).
+    Devuelve el dict {"hits", "faults", "swaps", "detalle"} o None.
     """
     mem = getattr(self, "memoria", None)
     if mem is None or unidades <= 0:
-        return
+        return None
     simular = getattr(mem, "simular_ejecucion", None)
     if simular is None:
-        return
+        return None
     try:
         res = simular(proceso, int(unidades))
     except Exception:
-        return
+        return None
     if not res or (not res.get("faults") and not res.get("hits")):
-        return
+        return res
     detalle = ""
     if res.get("detalle"):
         detalle = " (" + "; ".join(res["detalle"]) + ")"
@@ -30,3 +31,4 @@ def simular_accesos_virtuales(self, proceso, unidades):
         f"{res.get('hits', 0)} aciertos, {res.get('faults', 0)} fallos, "
         f"{res.get('swaps', 0)} swaps{detalle}."
     )
+    return res

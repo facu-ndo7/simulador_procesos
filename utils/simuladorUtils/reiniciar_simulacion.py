@@ -12,6 +12,8 @@ def reiniciar_simulacion(self):
     self.procesos_sim = []
     self.listos = []
     self.espera_memoria = []
+    self.bloqueados = []
+    self.espera_pagina = []
     self.cola_rr = deque()
     self.tiempo = 0
     self.proceso_actual = None

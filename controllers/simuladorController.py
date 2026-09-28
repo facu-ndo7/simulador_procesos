@@ -18,7 +18,9 @@ COLORES_ESTADO = {
     "Listo": {"bg": "#d3f9d8", "fg": "#2b8a3e"},
     "Ejecutando": {"bg": "#fff3bf", "fg": "#e67700"},
     "Esperando memoria": {"bg": "#ffe3e3", "fg": "#c92a2a"},
-    "Finalizado": {"bg": "#d0ebff", "fg": "#1864ab"},
+    "Bloqueado": {"bg": "#e5dbff", "fg": "#5f3dc4"},
+    "Esperando página": {"bg": "#ffe8cc", "fg": "#d9480f"},
+    "Terminado": {"bg": "#d0ebff", "fg": "#1864ab"},
 }
 
 class SimuladorSO(tk.Tk):
@@ -30,6 +32,8 @@ class SimuladorSO(tk.Tk):
         self.memoria = None
         self.listos = []
         self.espera_memoria = []
+        self.bloqueados = []
+        self.espera_pagina = []
         self.cola_rr = deque()
 
 
@@ -57,6 +61,9 @@ class SimuladorSO(tk.Tk):
             quedan_pendientes = bool(self.cola_rr)
         else:
             quedan_pendientes = bool(self.listos)
+        quedan_pendientes = (quedan_pendientes
+                             or bool(getattr(self, "bloqueados", []))
+                             or bool(getattr(self, "espera_pagina", [])))
 
 
         if not quedan_pendientes:

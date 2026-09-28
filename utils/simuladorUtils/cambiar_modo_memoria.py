@@ -112,7 +112,8 @@ def cambiar_modo_memoria(self):
     if getattr(self, "proceso_actual", None) is not None:
         candidatos.append(self.proceso_actual)
     for p in getattr(self, "procesos_sim", []):
-        if p.estado in ("Listo", "Ejecutando") and p.pid not in vistos:
+        if p.estado in ("Listo", "Ejecutando", "Bloqueado",
+                        "Esperando página") and p.pid not in vistos:
             vistos.add(p.pid)
             residentes.append(p)
     # Preserva el orden de llegada original.
@@ -121,11 +122,18 @@ def cambiar_modo_memoria(self):
 
     limite_nuevo = getattr(nuevo, "tamanio_virtual", total)
     espera_previa = list(getattr(self, "espera_memoria", []))
+    bloqueados_prev = {p.pid for p in residentes if p.estado == "Bloqueado"}
     nuevos_en_espera = []
     for p in residentes:
         if p.memoria > limite_nuevo or not nuevo.asignar(p):
             p.estado = "Esperando memoria"
             nuevos_en_espera.append(p)
+    # Los bloqueados conservan su estado tras la reubicación (asignar los
+    # deja en Listo); los que estaban esperando página vuelven a Listo y
+    # sufrirán los fallos por demanda en el nuevo gestor.
+    for p in residentes:
+        if p.pid in bloqueados_prev and p.estado == "Listo":
+            p.estado = "Bloqueado"
     # Reintenta la espera previa en el nuevo gestor.
     # (Los que ahora sí caben deben entrar a las colas de CPU.)
     for p in espera_previa:
@@ -147,6 +155,9 @@ def cambiar_modo_memoria(self):
             self.listos.sort(key=lambda p: p.rafaga)
     self.espera_memoria = [p for p in getattr(self, "procesos_sim", [])
                            if p.estado == "Esperando memoria"]
+    self.bloqueados = [p for p in getattr(self, "procesos_sim", [])
+                       if p.estado == "Bloqueado"]
+    self.espera_pagina = []
     ok_pids = {p.pid for p in admitidos}
 
     # Si el proceso_actual quedó en espera, se limpia para no mostrarlo.

@@ -7,7 +7,9 @@ COLORES_ESTADO = {
     "Listo": {"bg": "#d3f9d8", "fg": "#2b8a3e"},
     "Ejecutando": {"bg": "#fff3bf", "fg": "#e67700"},
     "Esperando memoria": {"bg": "#ffe3e3", "fg": "#c92a2a"},
-    "Finalizado": {"bg": "#d0ebff", "fg": "#1864ab"},
+    "Bloqueado": {"bg": "#e5dbff", "fg": "#5f3dc4"},
+    "Esperando página": {"bg": "#ffe8cc", "fg": "#d9480f"},
+    "Terminado": {"bg": "#d0ebff", "fg": "#1864ab"},
 }
 
 def actualizar_vistas(self):
@@ -37,6 +39,20 @@ def actualizar_vistas(self):
     self.lbl_espera.config(
         text=" -> ".join(p.pid for p in self.espera_memoria)
         if self.espera_memoria else "Ninguno"
+    )
+
+
+    bloqueados = getattr(self, "bloqueados", []) or []
+    self.lbl_bloqueados.config(
+        text=" -> ".join(p.pid for p in bloqueados)
+        if bloqueados else "Ninguno"
+    )
+
+
+    espera_pagina = getattr(self, "espera_pagina", []) or []
+    self.lbl_espera_pagina.config(
+        text=" -> ".join(p.pid for p in espera_pagina)
+        if espera_pagina else "Ninguno"
     )
 
 

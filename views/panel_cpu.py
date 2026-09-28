@@ -1,12 +1,16 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
+from utils.simuladorUtils.bloqueo_es import solicitar_es, fin_es
+
 COLORES_ESTADO = {
     "Nuevo": {"bg": "#e9ecef", "fg": "#495057"},
     "Listo": {"bg": "#d3f9d8", "fg": "#2b8a3e"},
     "Ejecutando": {"bg": "#fff3bf", "fg": "#e67700"},
     "Esperando memoria": {"bg": "#ffe3e3", "fg": "#c92a2a"},
-    "Finalizado": {"bg": "#d0ebff", "fg": "#1864ab"},
+    "Bloqueado": {"bg": "#e5dbff", "fg": "#5f3dc4"},
+    "Esperando página": {"bg": "#ffe8cc", "fg": "#d9480f"},
+    "Terminado": {"bg": "#d0ebff", "fg": "#1864ab"},
 }
 
 def panel_cpu(self, padre):
@@ -57,6 +61,38 @@ def panel_cpu(self, padre):
         justify="left"
     )
     self.lbl_espera.pack(anchor="w", pady=(3, 15))
+
+
+    ttk.Label(marco, text="Bloqueados (E/S):").pack(anchor="w")
+    self.lbl_bloqueados = tk.Label(
+        marco,
+        text="Ninguno",
+        font=("Arial", 13, "bold"),
+        fg=COLORES_ESTADO["Bloqueado"]["fg"],
+        wraplength=300,
+        justify="left"
+    )
+    self.lbl_bloqueados.pack(anchor="w", pady=(3, 8))
+
+
+    ttk.Label(marco, text="Esperando página:").pack(anchor="w")
+    self.lbl_espera_pagina = tk.Label(
+        marco,
+        text="Ninguno",
+        font=("Arial", 13, "bold"),
+        fg=COLORES_ESTADO["Esperando página"]["fg"],
+        wraplength=300,
+        justify="left"
+    )
+    self.lbl_espera_pagina.pack(anchor="w", pady=(3, 8))
+
+
+    fila_es = ttk.Frame(marco)
+    fila_es.pack(anchor="w", pady=(0, 10))
+    ttk.Button(fila_es, text="Solicitar E/S",
+               command=lambda: solicitar_es(self)).pack(side="left", padx=(0, 6))
+    ttk.Button(fila_es, text="Fin E/S",
+               command=lambda: fin_es(self)).pack(side="left")
 
 
     ttk.Label(marco, text="Historial CPU:").pack(anchor="w")
