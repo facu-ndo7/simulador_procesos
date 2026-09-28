@@ -4,6 +4,14 @@ from collections import deque
 from copy import deepcopy
 
 def actualizar_tabla(self, procesos):
+    """
+    Permite refrescar la tabla de procesos.
+    
+    Args:
+        self (SimuladorSO): Instancia de la clase SimuladorSO.
+        procesos (array): Una lista con los procesos agregados en el sistema.  
+    """
+    
     for item in self.tabla.get_children():
         self.tabla.delete(item)
 

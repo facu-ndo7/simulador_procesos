@@ -10,6 +10,13 @@ COLORES_ESTADO = {
 }
 
 def crear_tabla(self, padre):
+    """
+    Permite visualizar el panel central izquierdo que contiene los procesos agregados.
+    
+    Args:
+        self (SimuladorSO): Instancia de la clase SimuladorSO.
+        padre (Frame): Objeto de la clase Frame, la cual permite organizar la disposición de los componentes visuales.   
+    """
     marco = ttk.LabelFrame(padre, text="Procesos", padding=8)
     marco.pack(side="left", fill="both", expand=True, padx=(0, 6))
 

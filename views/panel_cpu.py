@@ -10,6 +10,13 @@ COLORES_ESTADO = {
 }
 
 def panel_cpu(self, padre):
+    """
+    Permite visualizar el panel central medio que hace seguimiento a los procesos ejecutandose.
+    
+    Args:
+        self (SimuladorSO): Instancia de la clase SimuladorSO.
+        padre (Frame): Objeto de la clase Frame, la cual permite organizar la disposición de los componentes visuales.   
+    """
     marco = ttk.LabelFrame(padre, text="CPU y cola de listos", padding=10)
     marco.pack(side="left", fill="both", expand=True, padx=6)
 

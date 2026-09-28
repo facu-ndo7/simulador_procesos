@@ -5,6 +5,14 @@ from utils.simuladorUtils.agregar_proceso import agregar_proceso
 from utils.simuladorUtils.eliminar_proceso import eliminar_proceso
 
 def panel_procesos(self, padre):
+    """
+    Permite visualizar el panel superior para agregar procesos.
+    
+    Args:
+        self (SimuladorSO): Instancia de la clase SimuladorSO.
+        padre (Frame): Objeto de la clase Frame, la cual permite organizar la disposición de los componentes visuales.   
+    """
+    
     marco = ttk.LabelFrame(padre, text="Carga de procesos", padding=10)
     marco.pack(side="left", fill="x", expand=True, padx=(0, 6))
     

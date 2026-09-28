@@ -4,10 +4,16 @@ from collections import deque
 from copy import deepcopy
 
 import utils.decoradores as decoradores
-
 from utils.simuladorUtils.actualizar_tabla import actualizar_tabla
 
 def agregar_proceso(self):
+    """
+    Permite agregar un nuevo proceso al atributo SimuladorSo.procesos (array).
+    
+    Args:
+        self (SimuladorSO): Instancia de la clase SimuladorSO.  
+    """
+    
     if self.simulacion_activa:
         messagebox.showwarning(
         "Simulación activa",
@@ -57,6 +63,7 @@ def agregar_proceso(self):
         memoria_total_actual = None
 
 
+    # Comparo la memoria del proceso con la memoria del sistema.
     if memoria_total_actual is not None and memoria > memoria_total_actual:
         messagebox.showwarning(
             "Memoria insuficiente",
@@ -67,11 +74,13 @@ def agregar_proceso(self):
         )
 
 
-    self.procesos.append(decoradores.Proceso(pid, rafaga, memoria))
+    self.procesos.append(decoradores.Proceso(pid, rafaga, memoria)) # Agrego un nuevo objeto Proceso.
     actualizar_tabla(self, self.procesos)
 
-
+    # Vacío los campos de entrada de datos del panel.
     self.entry_pid.delete(0, tk.END)
     self.entry_rafaga.delete(0, tk.END)
     self.entry_memoria.delete(0, tk.END)
+    
+    # Coloco el cursor en el campo de entrada de datos 'ID'.
     self.entry_pid.focus()

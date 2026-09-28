@@ -9,6 +9,13 @@ from views.panel_cpu import panel_cpu
 from views.panel_memoria import panel_memoria
 
 def pantalla_principal(self):
+    """
+    Permite visualizar la pantalla principal del sistema (GUI).
+    
+    Args:
+        self (SimuladorSO): Instancia de la clase SimuladorSO.
+    """
+    
     self.title("Simulador de CPU y Memoria - Sistemas Operativos")
     self.geometry("1280x840")
     self.minsize(1050, 680)
@@ -30,25 +37,23 @@ def pantalla_principal(self):
     contenedor.pack(fill="both", expand=True)
     
     
-    # Panel superior
+    # Panel superior.
     superior = ttk.Frame(contenedor)
     superior.pack(side="top", fill="x", pady=(0, 10))
     panel_procesos(self, superior)
     panel_configuracion(self, superior)
     
     
-    # Panel inferior
-    inferior = ttk.Frame(contenedor)
-    inferior.pack(side="bottom", fill="x", pady=(10, 0))
-    panel_eventos(self, inferior)
-    
-    
-    # Panel central?
+    # Paneles centrales.
     central = ttk.Frame(contenedor)
     central.pack(side="top", fill="both", expand=True)
     
     crear_tabla(self, central)
-    
     panel_cpu(self, central)
-    
     panel_memoria(self, central)
+    
+    # Panel inferior.
+    inferior = ttk.Frame(contenedor)
+    inferior.pack(side="bottom", fill="x", pady=(10, 0))
+    panel_eventos(self, inferior)
+    

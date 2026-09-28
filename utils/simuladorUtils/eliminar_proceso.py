@@ -5,7 +5,14 @@ from copy import deepcopy
 
 from utils.simuladorUtils.actualizar_tabla import actualizar_tabla
 
-def eliminar_proceso(self):  
+def eliminar_proceso(self):
+    """
+    Permite eliminar un proceso registrado.
+    
+    Args:
+        self (SimuladorSO): Instancia de la clase SimuladorSO.
+    """
+    
     if self.simulacion_activa:
         messagebox.showwarning(
             "Simulación activa",

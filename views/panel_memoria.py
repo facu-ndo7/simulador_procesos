@@ -2,6 +2,13 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 
 def panel_memoria(self, padre):
+    """
+    Permite visualizar el panel central derecho que hace seguimiento a la memoria principal.
+    
+    Args:
+        self (SimuladorSO): Instancia de la clase SimuladorSO.
+        padre (Frame): Objeto de la clase Frame, la cual permite organizar la disposición de los componentes visuales.   
+    """
     marco = ttk.LabelFrame(padre, text="Memoria principal", padding=8)
     marco.pack(side="left", fill="both", expand=True, padx=(6, 0))
 

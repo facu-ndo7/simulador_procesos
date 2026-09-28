@@ -8,6 +8,14 @@ from utils.simuladorUtils.limpiar_todo import limpiar_todo
 from utils.simuladorUtils.actualizar_estado_quantum import actualizar_estado_quantum
 
 def panel_configuracion(self, padre):
+    """
+    Permite visualizar el panel superior para establecer las configuraciones del sistema.
+        
+    Args:
+        self (SimuladorSO): Instancia de la clase SimuladorSO.
+        padre (Frame): Objeto de la clase Frame, la cual permite organizar la disposición de los componentes visuales.   
+    """
+    
     marco = ttk.LabelFrame(padre, text="Configuración", padding=10)
     marco.pack(side="left", fill="x", expand=True, padx=(6, 0))
     
