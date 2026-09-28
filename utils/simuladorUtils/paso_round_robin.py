@@ -1,5 +1,6 @@
 from utils.simuladorUtils.finalizar_proceso import finalizar_proceso
 from utils.simuladorUtils.registrar import registrar
+from utils.simuladorUtils.accesos_virtuales import simular_accesos_virtuales
 
 def paso_round_robin(self):
     if not self.cola_rr: return
@@ -21,6 +22,7 @@ def paso_round_robin(self):
     )
 
 
+    simular_accesos_virtuales(self, p, uso)
     self.tiempo += uso
     p.restante -= uso
     self.historial_cpu.append((p.pid, inicio, self.tiempo))

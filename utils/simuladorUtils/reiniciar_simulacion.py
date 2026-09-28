@@ -17,6 +17,8 @@ def reiniciar_simulacion(self):
     self.proceso_actual = None
     self.historial_cpu = []
     self.btn_paso.config(state="disabled")
+    if hasattr(self, "btn_cambiar_mem"):
+        self.btn_cambiar_mem.config(state="disabled")
     self.text_eventos.delete("1.0", tk.END)
     actualizar_tabla(self, self.procesos)
     actualizar_vistas(self)

@@ -9,9 +9,11 @@ def verificar_fin(self):
 
 
     if not quedan_pendientes:
+        limite = getattr(self.memoria, "tamanio_virtual",
+                         self.memoria.tamanio_total)
         imposibles = [
             p for p in self.espera_memoria
-            if p.memoria > self.memoria.tamanio_total
+            if p.memoria > limite
         ]
 
 
@@ -21,6 +23,8 @@ def verificar_fin(self):
 
         self.simulacion_activa = False
         self.btn_paso.config(state="disabled")
+        if hasattr(self, "btn_cambiar_mem"):
+            self.btn_cambiar_mem.config(state="disabled")
         self.proceso_actual = None
 
 

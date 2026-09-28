@@ -1,5 +1,6 @@
 from utils.simuladorUtils.actualizar_tabla import actualizar_tabla
 from utils.simuladorUtils.dibujar_memoria import dibujar_memoria
+from utils.simuladorUtils.actualizar_tabla_paginas import actualizar_tabla_paginas
 
 COLORES_ESTADO = {
     "Nuevo": {"bg": "#e9ecef", "fg": "#495057"},
@@ -56,3 +57,4 @@ def actualizar_vistas(self):
 
 
     dibujar_memoria(self)
+    actualizar_tabla_paginas(self)

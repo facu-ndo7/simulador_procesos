@@ -1,5 +1,6 @@
 from utils.simuladorUtils.finalizar_proceso import finalizar_proceso
 from utils.simuladorUtils.registrar import registrar
+from utils.simuladorUtils.accesos_virtuales import simular_accesos_virtuales
 
 def paso_fifo(self):
     if not self.listos: return
@@ -17,6 +18,8 @@ def paso_fifo(self):
     )
 
 
+    unidades = p.restante
+    simular_accesos_virtuales(self, p, unidades)
     self.tiempo += p.restante
     p.restante = 0
     p.estado = "Finalizado"

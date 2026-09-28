@@ -38,6 +38,11 @@ class SimuladorSO(tk.Tk):
         self.simulacion_activa = False
         self.alg_cpu = ""
         self.alg_mem = ""
+        self.modo_mem = "Asignación contigua"
+        self.ajuste_mem = "First-Fit"
+        self.tam_pagina = 8
+        self.tam_virtual = 400
+        self.reemplazo = "LRU"
         self.quantum = 0
         self.historial_cpu = []
 
@@ -55,9 +60,11 @@ class SimuladorSO(tk.Tk):
 
 
         if not quedan_pendientes:
+            limite = getattr(self.memoria, "tamanio_virtual",
+                             self.memoria.tamanio_total)
             imposibles = [
                 p for p in self.espera_memoria
-                if p.memoria > self.memoria.tamanio_total
+                if p.memoria > limite
             ]
 
 
@@ -68,6 +75,10 @@ class SimuladorSO(tk.Tk):
             self.simulacion_activa = False
             self.btn_paso.config(state="disabled")
             self.proceso_actual = None
+
+
+            if hasattr(self, "btn_cambiar_mem"):
+                self.btn_cambiar_mem.config(state="disabled")
 
 
             if self.espera_memoria:
