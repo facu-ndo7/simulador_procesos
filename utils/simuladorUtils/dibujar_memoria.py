@@ -27,14 +27,23 @@ def dibujar_memoria(self):
         total = self.memoria.tamanio_total
 
 
-    ancho = max(c.winfo_width(), 300)
-    alto = max(c.winfo_height(), 400)
+    ancho_real = c.winfo_width()
+    alto_real = c.winfo_height()
+    # Usar el tamaño real del canvas: el anterior max(..., 400) dibujaba
+    # más alto que el canvas visible y los últimos bloques quedaban
+    # aplastados/cortados abajo.
+    ancho = ancho_real if ancho_real > 50 else 320
+    alto = alto_real if alto_real > 50 else 370
 
 
     x1 = 45
-    x2 = ancho - 45
-    y = 20
-    alto_util = alto - 40
+    # Margen derecho reservado para etiquetar bloques muy pequeños fuera
+    # del rectángulo sin superponer textos.
+    x2 = ancho - 110
+    if x2 < x1 + 80:
+        x2 = ancho - 45
+    y0 = 20
+    alto_util = max(alto - 40, 60)
 
 
     colores = [
@@ -48,9 +57,22 @@ def dibujar_memoria(self):
     mapa_colores = {}
 
 
-    for pid, tamanio, texto in items:
-        proporcion = (tamanio / total) if total else 0
-        h = max(24, alto_util * proporcion)
+    # Alturas proporcionales al tamaño, escaladas para que la suma
+    # encaje EXACTO en alto_util. El anterior max(24, ...) hacía que N
+    # bloques pequeños sumaran más que el canvas y se amontonaran abajo.
+    brutos = [(alto_util * tamanio / total) if total else 0
+              for _, tamanio, _ in items]
+    MIN_H = 6.0
+    alturas = [max(MIN_H, b) if t > 0 else 0.0
+               for b, (_, t, _) in zip(brutos, items)]
+    suma = sum(alturas)
+    if suma > alto_util and suma > 0:
+        factor = alto_util / suma
+        alturas = [h * factor for h in alturas]
+
+    y = y0
+    ultimo_y_etiqueta = -100.0
+    for (pid, tamanio, texto), h in zip(items, alturas):
 
 
         if pid is None:
@@ -67,23 +89,48 @@ def dibujar_memoria(self):
             fill=color,
             outline="#444"
         )
-        c.create_text(
-            (x1 + x2) / 2,
-            y + h / 2,
-            text=texto,
-            justify="center",
-            font=("Arial", 11, "bold")
-        )
+        # Etiquetas sin amontonar: dentro si hay lugar, fuera (y con
+        # anti-colisión) si el bloque es muy bajo.
+        primera_linea = str(texto).split("\n")[0] if texto else ""
+        if h >= 30:
+            c.create_text(
+                (x1 + x2) / 2,
+                y + h / 2,
+                text=texto,
+                justify="center",
+                font=("Arial", 10, "bold")
+            )
+        elif h >= 15:
+            c.create_text(
+                (x1 + x2) / 2,
+                y + h / 2,
+                text=primera_linea,
+                justify="center",
+                font=("Arial", 9, "bold")
+            )
+        elif primera_linea:
+            yc = y + h / 2
+            if yc - ultimo_y_etiqueta >= 12:
+                c.create_text(
+                    x2 + 6,
+                    yc,
+                    text=primera_linea,
+                    anchor="w",
+                    font=("Arial", 8)
+                )
+                ultimo_y_etiqueta = yc
 
         y += h
 
 
+    c.create_text(x1 - 8, y0, text="0", anchor="e")
     c.create_text(
         x1 - 8,
         min(y, alto - 10),
         text=str(total),
         anchor="e"
     )
+    c.configure(scrollregion=c.bbox("all"))
 
 
     if hasattr(self.memoria, "info_resumen"):
