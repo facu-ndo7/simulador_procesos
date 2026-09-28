@@ -8,6 +8,7 @@ from utils.simuladorUtils.limpiar_todo import limpiar_todo
 from utils.simuladorUtils.actualizar_estado_quantum import actualizar_estado_quantum
 from utils.simuladorUtils.cambiar_modo_memoria import cambiar_modo_memoria
 from utils.simuladorUtils.comparar_esquemas import comparar_esquemas
+from utils.simuladorUtils.ejecucion_auto import alternar_auto
 import controllers.memoriaController as mc
 
 def actualizar_estado_memoria(self):
@@ -180,5 +181,14 @@ def panel_configuracion(self, padre):
         text="Limpiar todo",
         command=lambda: limpiar_todo(self)
     ).grid(row=5, column=1, padx=5, pady=10)
+
+
+    self.btn_auto = ttk.Button(
+        marco,
+        text="Auto",
+        command=lambda: alternar_auto(self),
+        state="disabled"
+    )
+    self.btn_auto.grid(row=5, column=2, padx=5, pady=10)
 
     actualizar_estado_memoria(self)

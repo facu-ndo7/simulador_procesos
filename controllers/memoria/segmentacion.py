@@ -177,6 +177,9 @@ class MemoriaSegmentada(GestorMemoria):
             return 0
         return sum(huecos) - max(huecos)
 
+    def mayor_bloque_libre(self):
+        return max([b.tamanio for b in self.bloques if b.libre] or [0])
+
     def memoria_libre_total(self):
         return sum(b.tamanio for b in self.bloques if b.libre)
 

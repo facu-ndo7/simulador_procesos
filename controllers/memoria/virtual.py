@@ -115,6 +115,30 @@ class MemoriaVirtual(GestorMemoria):
     def memoria_virtual_libre(self) -> int:
         return self.tamanio_virtual - self._comprometido()
 
+    def mayor_bloque_libre(self) -> int:
+        libres = [self.tamanios_marco[i] for i, contenido in enumerate(self.marcos)
+                  if contenido is None]
+        return max(libres or [0])
+
+    def fragmentacion_interna(self) -> int:
+        return sum(
+            e["num_paginas"] * self.tam_pagina - e["tamanio"]
+            for e in self.tabla.values()
+        )
+
+    def tasa_fallos(self) -> float:
+        """% de accesos que fueron fallos de página (0-100)."""
+        if self.accesos <= 0:
+            return 0.0
+        return 100.0 * self.fallos / self.accesos
+
+    def tmat(self) -> float:
+        """Tiempo medio de acceso en ticks: 1 por acceso + 1 por fallo
+        (carga) + 1 por swap (write-back de la víctima)."""
+        if self.accesos <= 0:
+            return 1.0
+        return (self.accesos + self.fallos + self.swaps) / self.accesos
+
     def swap_ocupado_paginas(self) -> int:
         return len(self.swap)
 

@@ -165,6 +165,8 @@ def iniciar_simulacion(self):
 
 
     self.tiempo = 0
+    self.tiempo_cpu = 0
+    self.cambios_contexto = 0
     self.proceso_actual = None
     self.historial_cpu = []
 
@@ -222,4 +224,10 @@ def iniciar_simulacion(self):
     # El modo puede cambiarse en caliente sin reiniciar.
     if hasattr(self, "btn_cambiar_mem"):
         self.btn_cambiar_mem.config(state="normal")
+    self.auto = False
+    if hasattr(self, "btn_auto"):
+        try:
+            self.btn_auto.config(state="normal", text="Auto")
+        except Exception:
+            pass
     actualizar_vistas(self)

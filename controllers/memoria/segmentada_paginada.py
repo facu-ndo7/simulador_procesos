@@ -50,7 +50,7 @@ class MemoriaSegmentadaPaginada(GestorMemoria):
         for t in self.tamanios_marco:
             self.offsets_marco.append(base)
             base += t
-        self.marcos = [None] * self.num_marcos  # "PID:Sj" o None
+        self.marcos = [None] * self.num_marcos  # (etiqueta, pagina) o None
         # Tabla de segmentos por proceso: pid -> [EntradaSegmentoSP],
         # cada una con su propia tabla de páginas.
         self.tabla = {}
@@ -76,8 +76,8 @@ class MemoriaSegmentadaPaginada(GestorMemoria):
             marcos_seg = libres[k:k + n]
             k += n
             etiqueta = f"{proceso.pid}:S{j}"
-            for i in marcos_seg:
-                self.marcos[i] = etiqueta
+            for q, i in enumerate(marcos_seg):
+                self.marcos[i] = (etiqueta, q)
             nombre = NOMBRES_SEG[j] if j < len(NOMBRES_SEG) else f"Seg{j}"
             entradas.append(EntradaSegmentoSP(
                 seg=j, nombre=nombre, limite=tam,
@@ -141,6 +141,11 @@ class MemoriaSegmentadaPaginada(GestorMemoria):
             if v is None
         )
 
+    def mayor_bloque_libre(self) -> int:
+        libres = [self.tamanios_marco[i] for i, v in enumerate(self.marcos)
+                  if v is None]
+        return max(libres or [0])
+
     def fragmentacion_interna(self) -> int:
         return sum(
             len(e.tabla_paginas) * self.tam_pagina - e.limite
@@ -160,10 +165,11 @@ class MemoriaSegmentadaPaginada(GestorMemoria):
 
     def bloques_visuales(self):
         items = []
-        for i, etiqueta in enumerate(self.marcos):
+        for i, contenido in enumerate(self.marcos):
             tam = self.tamanios_marco[i]
-            if etiqueta is None:
+            if contenido is None:
                 items.append((None, tam, f"LIBRE\n{tam} MB"))
             else:
-                items.append((etiqueta, tam, f"{etiqueta}\nM{i}"))
+                etiqueta, pagina = contenido
+                items.append((etiqueta, tam, f"{etiqueta}:p{pagina}\nM{i}"))
         return items

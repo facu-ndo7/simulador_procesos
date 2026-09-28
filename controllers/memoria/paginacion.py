@@ -35,7 +35,8 @@ class MemoriaPaginada(GestorMemoria):
         for t in self.tamanios_marco:
             self.offsets_marco.append(base)
             base += t
-        self.marcos = [None] * self.num_marcos  # pid o None
+        # (pid, pagina) o None: el marco sabe qué página guarda.
+        self.marcos = [None] * self.num_marcos
         # Tabla de páginas por proceso: pid -> [EntradaPagina].
         # El índice de la lista es la página virtual; cada entrada guarda
         # el marco físico asignado (todas residentes en paginación simple).
@@ -47,7 +48,7 @@ class MemoriaPaginada(GestorMemoria):
         return math.ceil(tamanio / self.tam_pagina)
 
     def marcos_libres(self):
-        return [i for i, pid in enumerate(self.marcos) if pid is None]
+        return [i for i, contenido in enumerate(self.marcos) if contenido is None]
 
     def asignar(self, proceso) -> bool:
         if proceso.pid in self.tabla_paginas:
@@ -57,8 +58,8 @@ class MemoriaPaginada(GestorMemoria):
         if len(libres) < necesarias:
             return False
         elegidos = libres[:necesarias]
-        for i in elegidos:
-            self.marcos[i] = proceso.pid
+        for j, i in enumerate(elegidos):
+            self.marcos[i] = (proceso.pid, j)
         self.tabla_paginas[proceso.pid] = [
             EntradaPagina(pagina=j, marco=m) for j, m in enumerate(elegidos)
         ]
@@ -109,9 +110,14 @@ class MemoriaPaginada(GestorMemoria):
     def memoria_libre_total(self) -> int:
         return sum(
             self.tamanios_marco[i]
-            for i, pid in enumerate(self.marcos)
-            if pid is None
+            for i, contenido in enumerate(self.marcos)
+            if contenido is None
         )
+
+    def mayor_bloque_libre(self) -> int:
+        libres = [self.tamanios_marco[i] for i, contenido in enumerate(self.marcos)
+                  if contenido is None]
+        return max(libres or [0])
 
     def fragmentacion_interna_de(self, pid) -> int:
         """Desperdicio por redondeo en la última página del proceso."""
@@ -133,7 +139,7 @@ class MemoriaPaginada(GestorMemoria):
         return total
 
     def info_resumen(self):
-        ocupados = sum(1 for pid in self.marcos if pid is not None)
+        ocupados = sum(1 for contenido in self.marcos if contenido is not None)
         return (
             f"{self.nombre}\n"
             f"Marcos: {ocupados}/{self.num_marcos} ocupados\n"
@@ -144,10 +150,11 @@ class MemoriaPaginada(GestorMemoria):
 
     def bloques_visuales(self):
         items = []
-        for i, pid in enumerate(self.marcos):
+        for i, contenido in enumerate(self.marcos):
             tam = self.tamanios_marco[i]
-            if pid is None:
+            if contenido is None:
                 items.append((None, tam, f"LIBRE\n{tam} MB"))
             else:
-                items.append((pid, tam, f"{pid}\nM{i}"))
+                pid, pagina = contenido
+                items.append((pid, tam, f"{pid}:p{pagina}\nM{i}"))
         return items

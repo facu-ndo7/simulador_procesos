@@ -16,6 +16,18 @@ def actualizar_vistas(self):
     self.lbl_tiempo.config(text=f"Tiempo: {self.tiempo}")
 
 
+    tcpu = getattr(self, "tiempo_cpu", 0)
+    if self.tiempo > 0:
+        self.lbl_uso_cpu.config(
+            text=f"Uso CPU: {100.0 * tcpu / self.tiempo:.0f}% ({tcpu}/{self.tiempo} u)")
+    else:
+        self.lbl_uso_cpu.config(text="Uso CPU: —")
+
+
+    self.lbl_contexto.config(
+        text=f"Cambios de contexto: {getattr(self, 'cambios_contexto', 0)}")
+
+
     if self.proceso_actual:
         self.lbl_cpu.config(
             text=f"{self.proceso_actual.pid} "f"(restante: {self.proceso_actual.restante})",
@@ -33,6 +45,16 @@ def actualizar_vistas(self):
 
     self.lbl_cola.config(
         text=" -> ".join(p.pid for p in cola) if cola else "Vacía"
+    )
+
+
+    if self.simulacion_activa:
+        fuente_nuevos = self.procesos_sim
+    else:
+        fuente_nuevos = self.procesos
+    nuevos = [p.pid for p in fuente_nuevos if p.estado == "Nuevo"]
+    self.lbl_nuevos.config(
+        text=" -> ".join(nuevos) if nuevos else "Ninguno"
     )
 
 

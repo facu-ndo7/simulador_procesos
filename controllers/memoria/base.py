@@ -31,6 +31,17 @@ class GestorMemoria(ABC):
         """Compatibilidad con la vista original. Por defecto 0."""
         return 0
 
+    def porcentaje_ocupacion(self) -> float:
+        """% de memoria física ocupada (0-100)."""
+        total = getattr(self, "tamanio_total", 0) or 0
+        if total <= 0:
+            return 0.0
+        return 100.0 * (total - self.memoria_libre_total()) / total
+
+    def mayor_bloque_libre(self) -> int:
+        """Tamaño del mayor bloque/marco libre contiguo usable."""
+        return 0
+
     def info_resumen(self) -> str:
         return (
             f"{self.nombre}\n"

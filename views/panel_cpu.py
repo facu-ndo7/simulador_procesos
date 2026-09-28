@@ -29,6 +29,14 @@ def panel_cpu(self, padre):
     self.lbl_tiempo.pack(anchor="w", pady=(0, 10))
 
 
+    self.lbl_uso_cpu = ttk.Label(marco, text="Uso CPU: —")
+    self.lbl_uso_cpu.pack(anchor="w", pady=(0, 10))
+
+
+    self.lbl_contexto = ttk.Label(marco, text="Cambios de contexto: 0")
+    self.lbl_contexto.pack(anchor="w", pady=(0, 10))
+
+
     ttk.Label(marco, text="Proceso ejecutándose:").pack(anchor="w")
     self.lbl_cpu = tk.Label(
         marco,
@@ -49,6 +57,18 @@ def panel_cpu(self, padre):
         justify="left"
     )
     self.lbl_cola.pack(anchor="w", pady=(3, 15))
+
+
+    ttk.Label(marco, text="Cola de nuevos:").pack(anchor="w")
+    self.lbl_nuevos = tk.Label(
+        marco,
+        text="Ninguno",
+        font=("Arial", 13, "bold"),
+        fg=COLORES_ESTADO["Nuevo"]["fg"],
+        wraplength=300,
+        justify="left"
+    )
+    self.lbl_nuevos.pack(anchor="w", pady=(3, 15))
 
 
     ttk.Label(marco, text="Esperando memoria:").pack(anchor="w")

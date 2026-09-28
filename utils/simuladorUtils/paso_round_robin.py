@@ -3,33 +3,60 @@ from utils.simuladorUtils.registrar import registrar
 from utils.simuladorUtils.accesos_virtuales import simular_accesos_virtuales
 
 # Penalización por fallo de página: 1u de E/S a swap por página traída.
+# Penalización por swapping: 1u adicional por reemplazo (escritura de
+# la víctima desalojada a disco).
 COSTO_FALLO_PAGINA = 1
+COSTO_SWAP = 1
+
+def _contar_contexto(self, p):
+    anterior = getattr(self, "proceso_actual", None)
+    if anterior is not None and anterior.pid != p.pid:
+        self.cambios_contexto = getattr(self, "cambios_contexto", 0) + 1
+
+def _quantum_vigente(self):
+    """Lee el quantum del entry si es válido (cambio en caliente)."""
+    entry = getattr(self, "entry_quantum", None)
+    if entry is not None:
+        try:
+            valor = int(entry.get().strip())
+        except (ValueError, AttributeError):
+            return getattr(self, "quantum", 0)
+        if valor > 0:
+            self.quantum = valor
+    return getattr(self, "quantum", 0)
 
 def paso_round_robin(self):
     if not self.cola_rr: return
 
 
     p = self.cola_rr.popleft()
+    _contar_contexto(self, p)
     p.estado = "Ejecutando"
     self.proceso_actual = p
 
 
     inicio = self.tiempo
-    uso = min(self.quantum, p.restante)
+    # Quantum en caliente: si el entry trae un valor válido, se aplica
+    # desde este paso sin reiniciar.
+    quantum = _quantum_vigente(self)
+    uso = min(quantum, p.restante)
 
 
     registrar(
         self,
         f"Round-Robin asigna la CPU a {p.pid}. "
-        f"Quantum = {self.quantum}."
+        f"Quantum = {quantum}."
     )
 
 
     res = simular_accesos_virtuales(self, p, uso)
     fallos = res.get("faults", 0) if res else 0
-    if fallos:
-        self.tiempo += fallos * COSTO_FALLO_PAGINA
+    swaps = res.get("swaps", 0) if res else 0
+    stall = fallos * COSTO_FALLO_PAGINA + swaps * COSTO_SWAP
+    if stall:
+        self.tiempo += stall
     self.tiempo += uso
+    self.tiempo_cpu = getattr(self, "tiempo_cpu", 0) + uso
     p.restante -= uso
     self.historial_cpu.append((p.pid, inicio, self.tiempo))
 
@@ -39,7 +66,7 @@ def paso_round_robin(self):
             registrar(
                 self,
                 f"{p.pid} pasó por 'Esperando página' "
-                f"(+{fallos * COSTO_FALLO_PAGINA}u de E/S a swap)."
+                f"({fallos} fallos, {swaps} swaps, +{stall}u de E/S a swap)."
             )
         p.estado = "Terminado"
         registrar(
@@ -58,8 +85,9 @@ def paso_round_robin(self):
         self.espera_pagina.append(p)
         registrar(
             self,
-            f"{p.pid} utilizó {uso} unidades pero sufrió {fallos} fallo(s): "
-            f"pasa a 'Esperando página' y retomará en el próximo paso."
+            f"{p.pid} utilizó {uso} unidades pero sufrió {fallos} fallo(s) "
+            f"y {swaps} swap(s): pasa a 'Esperando página' (+{stall}u) "
+            f"y retomará en el próximo paso."
         )
     else:
         p.estado = "Listo"

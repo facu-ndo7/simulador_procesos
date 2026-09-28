@@ -28,6 +28,12 @@ def verificar_fin(self):
         self.btn_paso.config(state="disabled")
         if hasattr(self, "btn_cambiar_mem"):
             self.btn_cambiar_mem.config(state="disabled")
+        self.auto = False
+        if hasattr(self, "btn_auto"):
+            try:
+                self.btn_auto.config(text="Auto")
+            except Exception:
+                pass
         self.proceso_actual = None
 
 

@@ -107,9 +107,29 @@ def dibujar_memoria(self):
             )
             if en_swap:
                 resumen += " [" + ", ".join(en_swap) + "]"
+            resumen += (f"\nTasa de fallos: {self.memoria.tasa_fallos():.1f}% "
+                        f"({self.memoria.fallos}/{self.memoria.accesos})")
+            resumen += f"\nTMAT: {self.memoria.tmat():.2f} ticks"
         elif isinstance(self.memoria, MemoriaSegmentadaPaginada):
             resumen += (f"\nFragmentación interna: "
                         f"{self.memoria.fragmentacion_interna()} MB")
+    except Exception:
+        pass
+    # Bloque de métricas común a todos los modos (tiempo real).
+    try:
+        total = getattr(self.memoria, "tamanio_total", 0) or 0
+        libre = self.memoria.memoria_libre_total()
+        usado = total - libre
+        ocup = self.memoria.porcentaje_ocupacion()
+        mayor = self.memoria.mayor_bloque_libre()
+        ext = self.memoria.fragmentacion_externa()
+        frag_int = getattr(self.memoria, "fragmentacion_interna", None)
+        intra = frag_int() if callable(frag_int) else 0
+        resumen += (f"\nOcupación física: {ocup:.0f}% ({usado}/{total} MB)")
+        resumen += f"\nMayor bloque libre: {mayor} MB"
+        resumen += (f"\nFragmentación: externa {100.0 * ext / total:.0f}% "
+                    f"({ext} MB) · interna {100.0 * intra / total:.0f}% "
+                    f"({intra} MB)" if total > 0 else "")
     except Exception:
         pass
     self.lbl_memoria_info.config(text=resumen)

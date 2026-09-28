@@ -38,6 +38,9 @@ class SimuladorSO(tk.Tk):
 
 
         self.tiempo = 0
+        self.tiempo_cpu = 0
+        self.cambios_contexto = 0
+        self.auto = False
         self.proceso_actual = None
         self.simulacion_activa = False
         self.alg_cpu = ""
@@ -86,6 +89,12 @@ class SimuladorSO(tk.Tk):
 
             if hasattr(self, "btn_cambiar_mem"):
                 self.btn_cambiar_mem.config(state="disabled")
+            self.auto = False
+            if hasattr(self, "btn_auto"):
+                try:
+                    self.btn_auto.config(text="Auto")
+                except Exception:
+                    pass
 
 
             if self.espera_memoria:
