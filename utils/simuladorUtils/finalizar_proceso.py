@@ -1,4 +1,4 @@
-from utils.registrar import registrar
+from utils.simuladorUtils.registrar import registrar
 
 def finalizar_proceso(self, proceso):
     self.memoria.liberar(proceso.pid)

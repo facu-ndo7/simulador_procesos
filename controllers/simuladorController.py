@@ -9,9 +9,9 @@ from copy import deepcopy
 import utils.decoradores as decoradores
 import controllers.memoriaController as mc # memoria controller.
 from views.pantalla_principal import pantalla_principal
-from utils.actualizar_estado_quantum import actualizar_estado_quantum
-from utils.registrar import registrar
-from utils.actualizar_vistas import actualizar_vistas
+from utils.simuladorUtils.actualizar_estado_quantum import actualizar_estado_quantum
+from utils.simuladorUtils.registrar import registrar
+from utils.simuladorUtils.actualizar_vistas import actualizar_vistas
 
 COLORES_ESTADO = {
     "Nuevo": {"bg": "#e9ecef", "fg": "#495057"},

@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-from utils.iniciar_simulacion import iniciar_simulacion
-from utils.paso_siguiente import paso_siguiente
-from utils.reiniciar_simulacion import reiniciar_simulacion
-from utils.limpiar_todo import limpiar_todo
-from utils.actualizar_estado_quantum import actualizar_estado_quantum
+from utils.simuladorUtils.iniciar_simulacion import iniciar_simulacion
+from utils.simuladorUtils.paso_siguiente import paso_siguiente
+from utils.simuladorUtils.reiniciar_simulacion import reiniciar_simulacion
+from utils.simuladorUtils.limpiar_todo import limpiar_todo
+from utils.simuladorUtils.actualizar_estado_quantum import actualizar_estado_quantum
 
 def panel_configuracion(self, padre):
     marco = ttk.LabelFrame(padre, text="Configuración", padding=10)

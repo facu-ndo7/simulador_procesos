@@ -5,7 +5,7 @@ from copy import deepcopy
 
 import utils.decoradores as decoradores
 
-from utils.actualizar_tabla import actualizar_tabla
+from utils.simuladorUtils.actualizar_tabla import actualizar_tabla
 
 def agregar_proceso(self):
     if self.simulacion_activa:

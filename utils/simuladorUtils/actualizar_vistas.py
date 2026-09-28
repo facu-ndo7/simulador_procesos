@@ -1,5 +1,5 @@
-from utils.actualizar_tabla import actualizar_tabla
-from utils.dibujar_memoria import dibujar_memoria
+from utils.simuladorUtils.actualizar_tabla import actualizar_tabla
+from utils.simuladorUtils.dibujar_memoria import dibujar_memoria
 
 COLORES_ESTADO = {
     "Nuevo": {"bg": "#e9ecef", "fg": "#495057"},

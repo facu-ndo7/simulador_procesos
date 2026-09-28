@@ -4,8 +4,8 @@ from collections import deque
 from copy import deepcopy
 
 import controllers.memoriaController as mc # memoria controller.
-from utils.actualizar_vistas import actualizar_vistas
-from utils.registrar import registrar
+from utils.simuladorUtils.actualizar_vistas import actualizar_vistas
+from utils.simuladorUtils.registrar import registrar
 
 def iniciar_simulacion(self):
     if not self.procesos:

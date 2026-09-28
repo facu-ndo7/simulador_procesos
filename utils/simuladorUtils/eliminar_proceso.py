@@ -3,7 +3,7 @@ from tkinter import ttk, messagebox
 from collections import deque
 from copy import deepcopy
 
-from utils.actualizar_tabla import actualizar_tabla
+from utils.simuladorUtils.actualizar_tabla import actualizar_tabla
 
 def eliminar_proceso(self):  
     if self.simulacion_activa:

@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-from utils.agregar_proceso import agregar_proceso
-from utils.eliminar_proceso import eliminar_proceso
+from utils.simuladorUtils.agregar_proceso import agregar_proceso
+from utils.simuladorUtils.eliminar_proceso import eliminar_proceso
 
 def panel_procesos(self, padre):
     marco = ttk.LabelFrame(padre, text="Carga de procesos", padding=10)

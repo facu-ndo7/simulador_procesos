@@ -1,5 +1,5 @@
-from utils.finalizar_proceso import finalizar_proceso
-from utils.registrar import registrar
+from utils.simuladorUtils.finalizar_proceso import finalizar_proceso
+from utils.simuladorUtils.registrar import registrar
 
 def paso_fifo(self):
     if not self.listos: return

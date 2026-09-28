@@ -3,8 +3,8 @@ from tkinter import ttk, messagebox
 from collections import deque
 from copy import deepcopy
 
-from utils.actualizar_vistas import actualizar_vistas
-from utils.actualizar_tabla import actualizar_tabla
+from utils.simuladorUtils.actualizar_vistas import actualizar_vistas
+from utils.simuladorUtils.actualizar_tabla import actualizar_tabla
 
 def reiniciar_simulacion(self):
     self.simulacion_activa = False
