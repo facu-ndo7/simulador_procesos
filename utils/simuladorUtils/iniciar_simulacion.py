@@ -49,16 +49,16 @@ def iniciar_simulacion(self):
             return
 
 
-    if self.quantum <= 0:
-        messagebox.showerror(
-            "Quantum inválido",
-            "El quantum debe ser mayor que cero."
-        )
-        return
+        if self.quantum <= 0:
+            messagebox.showerror(
+                "Quantum inválido",
+                "El quantum debe ser mayor que cero."
+            )
+            return
 
 
     self.procesos_sim = deepcopy(self.procesos)
-    self.memoria = mc(tamanio_memoria)
+    self.memoria = mc.Memoria(tamanio_memoria)
 
 
     self.listos = []
