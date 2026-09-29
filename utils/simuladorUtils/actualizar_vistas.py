@@ -1,16 +1,7 @@
 from utils.simuladorUtils.actualizar_tabla import actualizar_tabla
 from utils.simuladorUtils.dibujar_memoria import dibujar_memoria
 from utils.simuladorUtils.actualizar_tabla_paginas import actualizar_tabla_paginas
-
-COLORES_ESTADO = {
-    "Nuevo": {"bg": "#e9ecef", "fg": "#495057"},
-    "Listo": {"bg": "#d3f9d8", "fg": "#2b8a3e"},
-    "Ejecutando": {"bg": "#fff3bf", "fg": "#e67700"},
-    "Esperando memoria": {"bg": "#ffe3e3", "fg": "#c92a2a"},
-    "Bloqueado": {"bg": "#e5dbff", "fg": "#5f3dc4"},
-    "Esperando página": {"bg": "#ffe8cc", "fg": "#d9480f"},
-    "Terminado": {"bg": "#d0ebff", "fg": "#1864ab"},
-}
+from views.estilos import COLORES_ESTADO
 
 def actualizar_vistas(self):
     self.lbl_tiempo.config(text=f"Tiempo: {self.tiempo}")
