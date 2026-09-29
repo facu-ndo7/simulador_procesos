@@ -12,7 +12,7 @@ ESTADOS_PROCESO = (
 
 @dataclass
 class Proceso:
-    pid: str
+    pid: int
     rafaga: int
     memoria: int
     estado: str = "Nuevo"
@@ -27,7 +27,7 @@ class Proceso:
 class Bloque:
     inicio: int
     tamanio: int
-    pid: str | None = None
+    pid: int | str | None = None
 
 
     @property

@@ -29,6 +29,7 @@ class SimuladorSO(tk.Tk):
         
         self.procesos = []
         self.procesos_sim = []
+        self.proximo_pid = 1
         self.memoria = None
         self.listos = []
         self.espera_memoria = []

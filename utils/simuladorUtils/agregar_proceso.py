@@ -22,9 +22,6 @@ def agregar_proceso(self):
         return
 
 
-    pid = self.entry_pid.get().strip()
-
-
     try:
         rafaga = int(self.entry_rafaga.get())
         memoria = int(self.entry_memoria.get())
@@ -36,11 +33,6 @@ def agregar_proceso(self):
         return
 
 
-    if not pid:
-        messagebox.showerror("Dato faltante", "Debe ingresar un ID.")
-        return
-
-
     if rafaga <= 0 or memoria <= 0:
         messagebox.showerror(
             "Datos inválidos",
@@ -49,12 +41,16 @@ def agregar_proceso(self):
         return
 
 
-    if any(p.pid == pid for p in self.procesos):
-        messagebox.showerror(
-            "ID repetido",
-            "Ya existe un proceso con ese ID."
-        )
-        return
+    # ID autoincremental asignado por el sistema.
+    # No se reutilizan IDs eliminados para no confundir tablas/historial.
+    # Se genera DESPUÉS de validar, para no dejar huecos ante datos inválidos.
+    if not hasattr(self, "proximo_pid"):
+        self.proximo_pid = 1
+    existentes = {p.pid for p in self.procesos}
+    while self.proximo_pid in existentes:
+        self.proximo_pid += 1
+    pid = self.proximo_pid
+    self.proximo_pid += 1
 
 
     try:
@@ -77,10 +73,16 @@ def agregar_proceso(self):
     self.procesos.append(decoradores.Proceso(pid, rafaga, memoria)) # Agrego un nuevo objeto Proceso.
     actualizar_tabla(self, self.procesos)
 
+    # Muestro el próximo ID a asignar.
+    if hasattr(self, "var_proximo_pid"):
+        try:
+            self.var_proximo_pid.set(str(self.proximo_pid))
+        except Exception:
+            pass
+
     # Vacío los campos de entrada de datos del panel.
-    self.entry_pid.delete(0, tk.END)
     self.entry_rafaga.delete(0, tk.END)
     self.entry_memoria.delete(0, tk.END)
     
-    # Coloco el cursor en el campo de entrada de datos 'ID'.
-    self.entry_pid.focus()
+    # Coloco el cursor en el campo de entrada de datos 'Ráfaga CPU'.
+    self.entry_rafaga.focus()

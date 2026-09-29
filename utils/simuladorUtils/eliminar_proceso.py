@@ -22,10 +22,22 @@ def eliminar_proceso(self):
 
 
     seleccion = self.tabla.selection()
-    if not seleccion: return
+    if not seleccion:
+        messagebox.showinfo(
+            "Sin selección",
+            "Seleccione en la tabla el proceso a eliminar."
+        )
+        return
 
 
-    item = self.tabla.item(seleccion[0])
-    pid = item["values"][0]
-    self.procesos = [p for p in self.procesos if p.pid != pid]
+    pids = set()
+    for iid in seleccion:
+        valores = self.tabla.item(iid)["values"]
+        if valores:
+            pids.add(str(valores[0]).strip())
+    if not pids:
+        return
+    # Comparación como texto: el Treeview puede devolver el ID como str
+    # aunque el Proceso lo guarde como int (o viceversa con datos legacy).
+    self.procesos = [p for p in self.procesos if str(p.pid).strip() not in pids]
     actualizar_tabla(self, self.procesos)

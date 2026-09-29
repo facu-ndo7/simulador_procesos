@@ -44,7 +44,7 @@ def actualizar_vistas(self):
 
 
     self.lbl_cola.config(
-        text=" -> ".join(p.pid for p in cola) if cola else "Vacía"
+        text=" -> ".join(str(p.pid) for p in cola) if cola else "Vacía"
     )
 
 
@@ -54,26 +54,26 @@ def actualizar_vistas(self):
         fuente_nuevos = self.procesos
     nuevos = [p.pid for p in fuente_nuevos if p.estado == "Nuevo"]
     self.lbl_nuevos.config(
-        text=" -> ".join(nuevos) if nuevos else "Ninguno"
+        text=" -> ".join(str(pid) for pid in nuevos) if nuevos else "Ninguno"
     )
 
 
     self.lbl_espera.config(
-        text=" -> ".join(p.pid for p in self.espera_memoria)
+        text=" -> ".join(str(p.pid) for p in self.espera_memoria)
         if self.espera_memoria else "Ninguno"
     )
 
 
     bloqueados = getattr(self, "bloqueados", []) or []
     self.lbl_bloqueados.config(
-        text=" -> ".join(p.pid for p in bloqueados)
+        text=" -> ".join(str(p.pid) for p in bloqueados)
         if bloqueados else "Ninguno"
     )
 
 
     espera_pagina = getattr(self, "espera_pagina", []) or []
     self.lbl_espera_pagina.config(
-        text=" -> ".join(p.pid for p in espera_pagina)
+        text=" -> ".join(str(p.pid) for p in espera_pagina)
         if espera_pagina else "Ninguno"
     )
 

@@ -20,9 +20,11 @@ def panel_procesos(self, padre):
     ttk.Label(marco, text="ID").grid(row=0, column=0, sticky="w", padx=5, pady=5)
     ttk.Label(marco, text="Ráfaga CPU").grid(row=0, column=1, sticky="w", padx=5, pady=5)
     ttk.Label(marco, text="Memoria (MB)").grid(row=0, column=2, sticky="w", padx=5, pady=5)
-    
-    
-    self.entry_pid = ttk.Entry(marco, width=15)
+
+
+    self.var_proximo_pid = tk.StringVar(value=str(getattr(self, 'proximo_pid', 1)))
+    self.entry_pid = ttk.Entry(marco, width=15, state="readonly",
+                               textvariable=self.var_proximo_pid)
     self.entry_rafaga = ttk.Entry(marco, width=15)
     self.entry_memoria = ttk.Entry(marco, width=15)
     
@@ -48,5 +50,5 @@ def panel_procesos(self, padre):
     
     ttk.Label(
         marco,
-        text="Ingresar por teclado: ID, ráfaga y memoria requerida."
+        text="Ingrese ráfaga y memoria requerida."
     ).grid(row=2, column=0, columnspan=3, sticky="w", padx=5, pady=(8, 0))

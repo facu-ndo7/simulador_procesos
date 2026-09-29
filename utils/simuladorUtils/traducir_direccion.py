@@ -32,13 +32,17 @@ def traducir_direccion(self):
                 "Segmentación paginada.")
         return
     try:
-        pid = self.entry_trad_pid.get().strip()
+        pid_raw = self.entry_trad_pid.get().strip()
     except AttributeError:
         mostrar("Ingrese el PID del proceso.")
         return
-    if not pid:
+    if not pid_raw:
         mostrar("Ingrese el PID del proceso.")
         return
+    try:
+        pid = int(pid_raw)
+    except ValueError:
+        pid = pid_raw
 
     if modo in ("segmentacion", "segmentada_paginada"):
         try:
@@ -79,7 +83,7 @@ def traducir_direccion(self):
     try:
         direccion = int(self.entry_trad_dir.get().strip())
     except (AttributeError, ValueError):
-        mostrar("Ingrese PID y dirección lógica entera (ej: P1, 20).")
+        mostrar("Ingrese PID y dirección lógica entera (ej: 1, 20).")
         return
     try:
         r = mem.traducir(pid, direccion)
