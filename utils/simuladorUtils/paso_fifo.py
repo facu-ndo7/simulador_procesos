@@ -1,17 +1,11 @@
 from utils.simuladorUtils.finalizar_proceso import finalizar_proceso
 from utils.simuladorUtils.registrar import registrar
 from utils.simuladorUtils.accesos_virtuales import simular_accesos_virtuales
-
-# Penalización por fallo de página: 1u de E/S a swap por página traída.
-# Penalización por swapping: 1u adicional por reemplazo (escritura de
-# la víctima desalojada a disco).
-COSTO_FALLO_PAGINA = 1
-COSTO_SWAP = 1
-
-def _contar_contexto(self, p):
-    anterior = getattr(self, "proceso_actual", None)
-    if anterior is not None and anterior.pid != p.pid:
-        self.cambios_contexto = getattr(self, "cambios_contexto", 0) + 1
+from utils.simuladorUtils.paso_comun import (
+    COSTO_FALLO_PAGINA,
+    COSTO_SWAP,
+    contar_contexto as _contar_contexto,
+)
 
 def paso_fifo(self):
     if not self.listos: return

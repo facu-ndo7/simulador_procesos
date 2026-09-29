@@ -1,47 +1,12 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 from collections import deque
 from copy import deepcopy
 
 import controllers.memoriaController as mc # memoria controller.
 from utils.simuladorUtils.actualizar_vistas import actualizar_vistas
 from utils.simuladorUtils.registrar import registrar
-
-def _leer_entero(self, widget, nombre, obligatorio=False, defecto=None):
-    raw = ""
-    try:
-        raw = widget.get().strip()
-    except Exception:
-        raw = ""
-    if not raw:
-        if obligatorio:
-            messagebox.showerror(
-                "Dato inválido",
-                f"{nombre} debe ser un número entero mayor que cero."
-            )
-            return None
-        return defecto
-    try:
-        valor = int(raw)
-    except ValueError:
-        messagebox.showerror(
-            "Dato inválido",
-            f"{nombre} debe ser un número entero."
-        )
-        return None
-    if valor <= 0:
-        messagebox.showerror(
-            "Dato inválido",
-            f"{nombre} debe ser mayor que cero."
-        )
-        return None
-    return valor
-
-def _leer_tam_pagina(self, obligatorio=False):
-    if hasattr(self, "entry_tam_pagina"):
-        return _leer_entero(self, self.entry_tam_pagina, "El tamaño de página",
-                            obligatorio=obligatorio, defecto=8)
-    return 8
+from utils.simuladorUtils.leer_entero import leer_entero, leer_tam_pagina
 
 def iniciar_simulacion(self):
     if not self.procesos:
@@ -87,7 +52,7 @@ def iniciar_simulacion(self):
     modo_norm = mc.normalizar_modo(modo)
     necesita_pagina = modo_norm in ("Paginación", "Segmentación paginada",
                                     "Memoria virtual")
-    tam_pagina = _leer_tam_pagina(self, obligatorio=necesita_pagina)
+    tam_pagina = leer_tam_pagina(self, obligatorio=necesita_pagina)
     if tam_pagina is None:
         return
     if tam_pagina > tamanio_memoria:
@@ -104,7 +69,7 @@ def iniciar_simulacion(self):
         if hasattr(self, "combo_reemplazo"):
             reemplazo = self.combo_reemplazo.get() or "LRU"
         if hasattr(self, "entry_mem_virtual"):
-            tamanio_virtual = _leer_entero(
+            tamanio_virtual = leer_entero(
                 self, self.entry_mem_virtual, "La memoria virtual",
                 obligatorio=False, defecto=tamanio_memoria * 4)
             if tamanio_virtual is None:

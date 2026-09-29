@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 from utils.simuladorUtils.traducir_direccion import traducir_direccion
 

@@ -1,7 +1,4 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
-from collections import deque
-from copy import deepcopy
 
 def actualizar_tabla(self, procesos):
     """

@@ -1,5 +1,4 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 from views.panel_procesos import panel_procesos
 from views.panel_configuracion import panel_configuracion

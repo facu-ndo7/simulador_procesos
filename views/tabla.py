@@ -1,5 +1,4 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 COLORES_ESTADO = {
     "Nuevo": {"bg": "#e9ecef", "fg": "#495057"},

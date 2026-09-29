@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 from utils.simuladorUtils.bloqueo_es import solicitar_es, fin_es
 

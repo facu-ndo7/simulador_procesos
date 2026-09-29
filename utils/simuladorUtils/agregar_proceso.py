@@ -1,7 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
-from collections import deque
-from copy import deepcopy
+from tkinter import messagebox
 
 import utils.decoradores as decoradores
 from utils.simuladorUtils.actualizar_tabla import actualizar_tabla

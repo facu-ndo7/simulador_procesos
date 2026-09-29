@@ -1,5 +1,4 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 from utils.simuladorUtils.iniciar_simulacion import iniciar_simulacion
 from utils.simuladorUtils.paso_siguiente import paso_siguiente

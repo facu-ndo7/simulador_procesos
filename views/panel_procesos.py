@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 from utils.simuladorUtils.agregar_proceso import agregar_proceso
 from utils.simuladorUtils.eliminar_proceso import eliminar_proceso

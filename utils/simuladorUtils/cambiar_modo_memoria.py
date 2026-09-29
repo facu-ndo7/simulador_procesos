@@ -5,21 +5,7 @@ from tkinter import messagebox
 import controllers.memoriaController as mc
 from utils.simuladorUtils.actualizar_vistas import actualizar_vistas
 from utils.simuladorUtils.registrar import registrar
-
-
-def _leer_entero_optimo(self, nombre_attr, defecto):
-    if not hasattr(self, nombre_attr):
-        return defecto
-    try:
-        raw = getattr(self, nombre_attr).get().strip()
-    except Exception:
-        return defecto
-    if not raw:
-        return defecto
-    try:
-        return int(raw)
-    except ValueError:
-        return None
+from utils.simuladorUtils.leer_entero import leer_entero_optimo
 
 
 def cambiar_modo_memoria(self):
@@ -34,7 +20,7 @@ def cambiar_modo_memoria(self):
     modo = self.combo_modo_mem.get() if hasattr(self, "combo_modo_mem") else ""
     ajuste = self.combo_ajuste_mem.get() if hasattr(self, "combo_ajuste_mem") else "First-Fit"
     reemplazo = self.combo_reemplazo.get() if hasattr(self, "combo_reemplazo") else getattr(self, "reemplazo", "LRU")
-    tam_pagina = _leer_entero_optimo(self, "entry_tam_pagina", 8)
+    tam_pagina = leer_entero_optimo(self, "entry_tam_pagina", 8)
     if tam_pagina is None:
         messagebox.showerror(
             "Página inválida",
@@ -51,7 +37,7 @@ def cambiar_modo_memoria(self):
         fisica_ui = int(self.entry_mem_total.get().strip())
     except (ValueError, AttributeError):
         fisica_ui = self.memoria.tamanio_total
-    tam_virtual = _leer_entero_optimo(self, "entry_mem_virtual",
+    tam_virtual = leer_entero_optimo(self, "entry_mem_virtual",
                                       getattr(self, "tam_virtual", fisica_ui))
     if tam_virtual is None:
         messagebox.showerror(
